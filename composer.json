@@ -1,0 +1,17 @@
+{
+    "name": "naoh/crud_php_mysql",
+    "autoload": {
+        "psr-4": {
+            "Naoh\\CrudPhpMysql\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "naohchan",
+            "email": "grodanaya@gmail.com"
+        }
+    ],
+    "require": {
+        "phpoffice/phpspreadsheet": "^4.3"
+    }
+}

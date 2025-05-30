@@ -1,0 +1,53 @@
+.bg-warning {
+    background-color: #fff3cd !important;
+}
+
+.navbar, .navbar * {
+    font-family:  'Source Code Pro', monospace !important;
+    font-size: 30px !important;
+}
+
+/* Extra opcional: mejorar apariencia */
+.table td[contenteditable="true"] {
+    border: 2px dashed #ffc107;
+}
+
+th a {
+    color: inherit;          /* usa el color del th */
+    text-decoration: none;   /* elimina subrayado */
+}
+
+th a:hover {
+    text-decoration: underline;  /* opcional: subrayado al pasar el mouse */
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #0d2755; /* Azul Bootstrap */
+    color: white;              /* Opcional: texto blanco para contraste */
+}
+
+
+.navbar-custom {
+    background-color: white;
+}
+
+.navbar-brand {
+    color: #007BFF;
+    font-weight: bold;
+}
+
+
+footer {
+    background-color: #222;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 50px;
+}
+
+footer a {
+    color: #00d8ff;
+    text-decoration: none;
+}
+
