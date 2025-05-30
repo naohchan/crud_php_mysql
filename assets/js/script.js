@@ -29,7 +29,7 @@ function loadTable(sort, order,filters = {}) {
         </tr>
     `;
 
-    // Construir parámetros
+    // build params
     const params = new URLSearchParams({
         sort: sort,
         order: order,
