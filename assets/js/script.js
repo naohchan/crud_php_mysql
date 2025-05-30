@@ -333,7 +333,7 @@ function exportarTodo() {
     const ageMin = document.getElementById('ageMin').value || 0;
     const ageMax = document.getElementById('ageMax').value || 150;
 
-    const url = `export.php?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&edadMin=${ageMin}&edadMax=${ageMax}`;
+    const url = `export.php?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&ageMin=${ageMin}&ageMax=${ageMax}`;
     window.open(url, '_blank');
 }
 

@@ -12,8 +12,8 @@ $conn = new mysqli('localhost', 'root', 'naohchan', 'customerdb'); // Ajusta tus
 // 3. Obtener los filtros desde el frontend
 $name = $_GET['name'] ?? '';
 $email = $_GET['email'] ?? '';
-$edadMin = $_GET['edadMin'] ?? 0;
-$edadMax = $_GET['edadMax'] ?? 150;
+$ageMin = $_GET['ageMin'] ?? 0;
+$ageMax = $_GET['ageMax'] ?? 150;
 
 // 4. Preparar la consulta SQL usando filtros
 $sql = "SELECT id, name, age, email FROM clients 
@@ -23,7 +23,7 @@ $stmt = $conn->prepare($sql);
 // 5. Reemplazar los placeholders con los valores filtrados
 $name = "%$name%";    // Para usar con LIKE
 $email = "%$email%";
-$stmt->bind_param('ssii', $name, $email, $edadMin, $edadMax);
+$stmt->bind_param('ssii', $name, $email, $ageMin, $ageMax);
 $stmt->execute();
 $result = $stmt->get_result();
 
