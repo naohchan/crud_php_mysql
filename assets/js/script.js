@@ -337,9 +337,6 @@ function exportarTodo() {
     window.open(url, '_blank');
 }
 
-
-
-
     // At loading the page, bring the initial table
     document.addEventListener("DOMContentLoaded", () => {
         loadTable(columnCurrent, sortCurrent);
