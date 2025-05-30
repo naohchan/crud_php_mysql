@@ -33,8 +33,8 @@ function loadTable(sort, order,filters = {}) {
     const params = new URLSearchParams({
         sort: sort,
         order: order,
-        page: currentPage, //<--
-        limit: registersPerPage,//<- check
+        page: currentPage, //<--check the current page
+        limit: registersPerPage,//<- check 
         name: filters.name || '',
         email: filters.email || '',
         ageMin: filters.ageMin || '',
