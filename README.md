@@ -83,19 +83,20 @@ and then you should be ready to go!
 
 ● What parts of the stack were familiar to you?
 
-I was already familiar with using PHP, MySQL, and HTML/CSS/JavaScript to build basic CRUD interfaces. I had previously worked with PHP to interact with databases using the mysqli extension, and I understood the fundamentals of asynchronous behavior with AJAX for updating content without refreshing the page.
+I was already familiar with PHP, MySQL, and the basic structure of a full-stack system thanks to a previous project I developed called SmartKiosk, where I used Android for the front end and PHP + MySQL for managing the backend orders. That experience gave me a good foundation for server-side scripting, database interactions, and basic API flows.
 
 ● What was new?
 
-Using Composer to manage PHP dependencies was relatively new to me, especially installing and integrating third-party libraries like PHPSpreadsheet. I also hadn't worked with PHP 8.3 before, so getting the right extensions and managing compatibility (e.g., ext-gd) was a learning opportunity.
+This time, I wanted to go back to the basics and focus on a purely PHP-based web project to refresh and strengthen my skills in HTML, CSS, and JavaScript. I took the opportunity to use Bootstrap for styling, which I hadn’t used extensively before, and also learned how to implement PHPSpreadsheet — a powerful library to generate downloadable Excel files with filtered data from the database.
 
-● What did you learn while doing this project? 
+● What did you learn while doing this project?
 
-How to set up a modern PHP development environment on Linux, including installing PHP 8.3, Composer, and MySQL 8.0.42.
+How to build a structured, user-friendly CRUD web app using only PHP and standard front-end technologies.
 
-How to use PHPSpreadsheet to export filtered data dynamically and how to handle missing extensions.
+How to integrate AJAX to handle CRUD operations asynchronously for a smoother user experience.
 
-How to structure a CRUD application with modular PHP files (e.g., create.php, delete.php, updates.php) and AJAX calls to keep the UI responsive.
+How to use Composer and install dependencies properly in a PHP project.
 
-Best practices for writing readable and maintainable PHP code, including error handling and user-friendly messages.
+How to work with PHPSpreadsheet to generate dynamic Excel exports.
 
+And finally, how to polish the UI using Bootstrap components to make the project responsive and clean.
