@@ -93,7 +93,7 @@
                                 <!-- It would load dinamically -->
                             </tbody>
                         </table>
-                        <button class="btn btn-success mb-3" onclick="exportarTodo()">Exportar todo (filtro actual)</button>
+                        <button class="btn btn-success mb-3" onclick="exportData()">Exportar todo (filtro actual)</button>
 
                     </div>
                     

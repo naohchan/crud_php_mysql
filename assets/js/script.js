@@ -195,139 +195,139 @@ function filter() {
     });
 }
 
-    function addCustomer(event) {
-        if (event) event.preventDefault();
+function addCustomer(event) {
+    if (event) event.preventDefault();
 
-        const name = document.getElementById("newName").value.trim();
-        const age = document.getElementById("newAge").value.trim();
-        const email = document.getElementById("newEmail").value.trim();
+    const name = document.getElementById("newName").value.trim();
+    const age = document.getElementById("newAge").value.trim();
+    const email = document.getElementById("newEmail").value.trim();
 
-        if (!name || !age || !email) {
-            alert("Please complete all fields.");
-            return false;
-        }
+    if (!name || !age || !email) {
+        alert("Please complete all fields.");
+        return false;
+    }
 
-        fetch('api/create.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: new URLSearchParams({
-                name: name,
-                age: age,
-                email: email
-            })
+    fetch('api/create.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+            name: name,
+            age: age,
+            email: email
         })
-        .then(res => res.text())
-        .then(text => {
-            console.log("Raw answer", text);
-            try {
-                const data = JSON.parse(text);
-                if (data.success) {
-                    alert("✅ Customer added");
+    })
+    .then(res => res.text())
+    .then(text => {
+        console.log("Raw answer", text);
+        try {
+            const data = JSON.parse(text);
+            if (data.success) {
+                alert("✅ Customer added");
 
-                    document.getElementById("newName").value = "";
-                    document.getElementById("newAge").value = "";
-                    document.getElementById("newEmail").value = "";
+                document.getElementById("newName").value = "";
+                document.getElementById("newAge").value = "";
+                document.getElementById("newEmail").value = "";
 
-                    loadTable(columnCurrent, sortCurrent);
-                } else {
-                    alert("❌ Error: " + data.message);
-                }
-            } catch (e) {
-                console.error("❌ JSON malformed:", e);
-                alert("❌ Invalid answer of server");
+                loadTable(columnCurrent, sortCurrent);
+            } else {
+                alert("❌ Error: " + data.message);
             }
-        })
-        .catch(err => {
-            console.error("❌ Error of red:", err);
-            alert("❌ Error of red or of the server");
+        } catch (e) {
+            console.error("❌ JSON malformed:", e);
+            alert("❌ Invalid answer of server");
+        }
+    })
+    .catch(err => {
+        console.error("❌ Error of red:", err);
+        alert("❌ Error of red or of the server");
+    });
+
+    return false; // to not reload
+}
+
+function toggleEdition(id, button) {
+    const fila = document.getElementById(`fila-${id}`);
+    const celdas = fila.querySelectorAll('.editable');
+
+    if (button.textContent === 'Edit') {
+        // Activate edition
+        celdas.forEach(td => {
+            td.setAttribute('contenteditable', 'true');
+            td.classList.add('bg-warning');
         });
 
-        return false; // to not reload
-    }
+        button.textContent = 'Save';
+        button.classList.remove('btn-primary');
+        button.classList.add('btn-success');
 
-    function toggleEdition(id, boton) {
-        const fila = document.getElementById(`fila-${id}`);
-        const celdas = fila.querySelectorAll('.editable');
-
-        if (boton.textContent === 'Edit') {
-            // Activar edición
-            celdas.forEach(td => {
-                td.setAttribute('contenteditable', 'true');
-                td.classList.add('bg-warning');
-            });
-
-            boton.textContent = 'Save';
-            boton.classList.remove('btn-primary');
-            boton.classList.add('btn-success');
-
-        } else {
+    } else {
             
-            // Save changes
-            const data = {};
-            celdas.forEach(td => {
-                const field = td.dataset.field;
-                const value = td.textContent.trim();
-                data[field] = value;
-            });
+        // Save changes
+        const data = {};
+        celdas.forEach(td => {
+            const field = td.dataset.field;
+            const value = td.textContent.trim();
+            data[field] = value;
+        });
 
-            Promise.all(Object.entries(data).map(([field, value]) => {
-                return fetch('api/update.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    body: new URLSearchParams({ id, field, value })
-                }).then(res => res.json());
-            })).then(results => {
-                if (results.every(r => r.success)) {
-                    alert('✅ Changes saved!');
-                    celdas.forEach(td => {
-                        td.removeAttribute('contenteditable');
-                        td.classList.remove('bg-warning');
-                    });
-                    boton.textContent = 'Edit';
-                    boton.classList.remove('btn-success');
-                    boton.classList.add('btn-primary');
-                } else {
-                    alert('❌ There was a problem at saving');
-                }
-            }).catch(err => {
-                console.error(err);
-                alert('❌ Error of red');
-            });
-        }
-    }
-
-    function deleteCustomer(id) {
-                
-        if (!confirm("¿Are you sure you want to delete this customer?")) return;
-
-            fetch('api/delete.php', {
+        Promise.all(Object.entries(data).map(([field, value]) => {
+            return fetch('api/update.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
-                    body: new URLSearchParams({ id: id })
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success) {
-                        alert("🗑️ Customer deleted successfully");
-                        loadTable(columnCurrent, sortCurrent);
-                    } else {
-                        alert("❌ Error: " + data.message);
-                    }
-                })
-                .catch(err => {
-                    console.error(err);
-                    alert("❌ Error of red");
+                body: new URLSearchParams({ id, field, value })
+            }).then(res => res.json());
+        })).then(results => {
+            if (results.every(r => r.success)) {
+                alert('✅ Changes saved!');
+                celdas.forEach(td => {
+                    td.removeAttribute('contenteditable');
+                    td.classList.remove('bg-warning');
                 });
+                button.textContent = 'Edit';
+                button.classList.remove('btn-success');
+                button.classList.add('btn-primary');
+            } else {
+                alert('❌ There was a problem at saving');
+            }
+        }).catch(err => {
+            console.error(err);
+            alert('❌ Error of red');
+        });
     }
+}
+
+function deleteCustomer(id) {
+                
+    if (!confirm("¿Are you sure you want to delete this customer?")) return;
+
+        fetch('api/delete.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+                body: new URLSearchParams({ id: id })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert("🗑️ Customer deleted successfully");
+                    loadTable(columnCurrent, sortCurrent);
+                } else {
+                    alert("❌ Error: " + data.message);
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert("❌ Error of red");
+            });
+}
 
 
-function exportarTodo() {
+function exportData() {
     const name = document.getElementById('filterName').value;
     const email = document.getElementById('filterEmail').value;
     const ageMin = document.getElementById('ageMin').value || 0;
@@ -337,27 +337,27 @@ function exportarTodo() {
     window.open(url, '_blank');
 }
 
-    // At loading the page, bring the initial table
-    document.addEventListener("DOMContentLoaded", () => {
+// At loading the page, bring the initial table
+document.addEventListener("DOMContentLoaded", () => {
+    loadTable(columnCurrent, sortCurrent);
+        
+    document.getElementById("recordsPerPage").addEventListener("change", e => {
+        registersPerPage = parseInt(e.target.value);
+        currentPage = 1;
         loadTable(columnCurrent, sortCurrent);
-        
-        document.getElementById("recordsPerPage").addEventListener("change", e => {
-            registersPerPage = parseInt(e.target.value);
-            currentPage = 1;
-            loadTable(columnCurrent, sortCurrent);
-        });
-        
-        document.getElementById("filterName").addEventListener("input", filter);
-        document.getElementById("filterEmail").addEventListener("input", filter);
-        document.getElementById("ageMin").addEventListener("input", filter);
-        document.getElementById("ageMax").addEventListener("input", filter);
-
-        // Activate graph at changing to tab "Analytics"
-        const tabAnalytics = document.querySelector('button[data-bs-target="#analytics"]');
-        if (tabAnalytics) {
-            tabAnalytics.addEventListener('shown.bs.tab', () => {
-                loadGraphAge();
-            });
-        }
-
     });
+        
+    document.getElementById("filterName").addEventListener("input", filter);
+    document.getElementById("filterEmail").addEventListener("input", filter);
+    document.getElementById("ageMin").addEventListener("input", filter);
+    document.getElementById("ageMax").addEventListener("input", filter);
+
+    // Activate graph at changing to tab "Analytics"
+    const tabAnalytics = document.querySelector('button[data-bs-target="#analytics"]');
+    if (tabAnalytics) {
+        tabAnalytics.addEventListener('shown.bs.tab', () => {
+            loadGraphAge();
+        });
+    }
+
+});
