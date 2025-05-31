@@ -270,12 +270,12 @@ function toggleEdition(id, button) {
     const celdas = fila.querySelectorAll('.editable');
 
     if (button.textContent === 'Edit') {
-        // Activate edition
+        // Activate edition fields
         celdas.forEach(td => {
             td.setAttribute('contenteditable', 'true');
             td.classList.add('bg-warning');
         });
-
+        // change the button name and class
         button.textContent = 'Save';
         button.classList.remove('btn-primary');
         button.classList.add('btn-success');
@@ -283,14 +283,17 @@ function toggleEdition(id, button) {
     } else {
             
         // Save changes
+        // create an empty array
         const data = {};
+        // store the data with the values
         celdas.forEach(td => {
             const field = td.dataset.field;
             const value = td.textContent.trim();
             data[field] = value;
         });
-
-        Promise.all(Object.entries(data).map(([field, value]) => {
+        //do fetch per any field
+        Promise.all(
+            Object.entries(data).map(([field, value]) => {
             return fetch('api/update.php', {
                 method: 'POST',
                 headers: {
