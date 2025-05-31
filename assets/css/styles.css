@@ -7,24 +7,24 @@
     font-size: 30px !important;
 }
 
-/* Extra opcional: mejorar apariencia */
+/* enhance appareance */
 .table td[contenteditable="true"] {
     border: 2px dashed #ffc107;
 }
 
 th a {
-    color: inherit;          /* usa el color del th */
-    text-decoration: none;   /* elimina subrayado */
+    color: inherit;          /* use color th*/
+    text-decoration: none;   /* delete underline */
 }
 
 th a:hover {
-    text-decoration: underline;  /* opcional: subrayado al pasar el mouse */
+    text-decoration: underline;  /* opcional: underline when mouse over */
 }
 
 body {
     font-family: 'Inter', sans-serif;
     background-color: #0d2755; /* Azul Bootstrap */
-    color: white;              /* Opcional: texto blanco para contraste */
+    color: white;              /* Opcional: white text for constrast */
 }
 
 

@@ -40,11 +40,12 @@ function loadTable(sort, order,filters = {}) {
         ageMin: filters.ageMin || '',
         ageMax: filters.ageMax || ''
     });
-
+    // request GET to table.php with the params
     fetch(`api/table.php?${params.toString()}`)
         .then(res => res.text())
         .then(html => {
             tbody.innerHTML = html;
+            //update pagination buttons
             updatePagination();
 
         })
@@ -53,32 +54,40 @@ function loadTable(sort, order,filters = {}) {
             console.error("Error at loading table:", error);
         });
 }
-
+//update pagination buttons in dinamyc table
 function updatePagination() {
+    // search for elements where 
     const container = document.getElementById("pagination");
+    // Stop if they don't exist
     if (!container) return;
 
+    // getting the filter values
     const name = document.getElementById("filterName").value.trim();
     const email = document.getElementById("filterEmail").value.trim();
     const ageMin = document.getElementById("ageMin").value.trim();
     const ageMax = document.getElementById("ageMax").value.trim();
 
+    // send request to total.php
     fetch(`api/total.php?name=${name}&email=${email}&ageMin=${ageMin}&ageMax=${ageMax}`)
         .then(res => res.json())
         .then(data => {
+            // calculate the number of registers
             const totalRegistros = data.total;
+            //round up the number of pages
             const totalPages = Math.ceil(totalRegistros / registersPerPage);
 
-
+            // if we have content, we update the count of registers
             const recordCount = document.getElementById("recordCount");
             if (recordCount) {
                 recordCount.textContent = `Number of records: ${totalRegistros}`;
             }
 
+            //clean the actual pagination
             container.innerHTML = '';
             
-            // Botón previous
+            // button previous
             const liPrev = document.createElement('li');
+            // if curren page is 1, is disabled
             liPrev.className = 'page-item' + (currentPage === 1 ? ' disabled' : '');
             liPrev.innerHTML = `<a class="page-link" href="#">«</a>`;
             liPrev.onclick = () => {
@@ -89,7 +98,7 @@ function updatePagination() {
             };
             container.appendChild(liPrev);
 
-            // Rango dinámico de páginas
+            // Dynamic range of pages
             const rango = 3;
             let start = Math.max(1, currentPage - rango);
             let end = Math.min(totalPages, currentPage + rango);
@@ -122,6 +131,7 @@ function updatePagination() {
         });
 }
 
+// create button pagination for an specific page
 function createButtonPage(page) {
     const li = document.createElement('li');
     li.className = 'page-item' + (page === currentPage ? ' active' : '');
@@ -130,9 +140,11 @@ function createButtonPage(page) {
         currentPage = page;
         loadTable(columnCurrent, sortCurrent);
     };
+    // return the <li> element and ready to insert it in DOM 
     return li;
 }
 
+// create (...) to show there are intermediate pages
 function createEllipsis() {
     const li = document.createElement('li');
     li.className = 'page-item disabled';
@@ -141,20 +153,23 @@ function createEllipsis() {
 }
 
 function loadGraphAge() {
+    // GET request to age_stats.php that should response with a json
     fetch('api/age_stats.php')
         .then(res => res.json())
         .then(data => {
+            // extract age and count
             const ages = data.map(item => item.age);
             const quantities = data.map(item => item.count);
-
+            // get the canvas
             const ctx = document.getElementById('ageChart').getContext('2d');
             new Chart(ctx, {
-                type: 'bar',
+                type: 'bar', // bar graphics
                 data: {
                     labels: ages,
                     datasets: [{
                         label: 'Customers by Age',
-                        data: quantities,
+                        data: quantities, // customers per age
+                        // graph style
                         backgroundColor: 'rgba(54, 162, 235, 0.5)',
                         borderColor: 'rgba(54, 162, 235, 1)',
                         borderWidth: 1
@@ -163,7 +178,9 @@ function loadGraphAge() {
                 options: {
                     responsive: true,
                     plugins: {
+                        // because we just have 1 serie
                         legend: { display: false },
+                        //tittle of graph
                         title: {
                             display: true,
                             text: 'Customer distributions by Age'
@@ -209,6 +226,7 @@ function addCustomer(event) {
 
     fetch('api/create.php', {
         method: 'POST',
+        // using traditional format
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
@@ -225,11 +243,11 @@ function addCustomer(event) {
             const data = JSON.parse(text);
             if (data.success) {
                 alert("✅ Customer added");
-
+                // AFTER SUCCESS, WE CLEAN THE FIELDS
                 document.getElementById("newName").value = "";
                 document.getElementById("newAge").value = "";
                 document.getElementById("newEmail").value = "";
-
+                // load again the table
                 loadTable(columnCurrent, sortCurrent);
             } else {
                 alert("❌ Error: " + data.message);
